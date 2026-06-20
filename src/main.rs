@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 mod filesystem;
 mod shell;
 mod glitch;

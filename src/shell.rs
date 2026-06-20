@@ -1,3 +1,4 @@
+use crate::glitch;
 use std::io::{self, Write};
 use crate::filesystem::FileSystem;
 
@@ -118,5 +119,6 @@ pub fn run() {
                 println!("unknown command: '{}'. type 'help' for available commands.", command);
             }
         }
+        glitch::glitch_line();
     }
 }
