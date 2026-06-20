@@ -76,6 +76,39 @@ pub fn run() {
                 io::stdout().flush().unwrap();
             }
 
+            "run" => {
+                            if arg.is_empty() {
+                                println!("usage: run <file.vsk>");
+                            } else {
+                                match fs.get_file(arg) {
+                                    Some(contents) => {
+                                        use std::process::Command;
+                                        use std::fs;
+            
+                                        let tmp = "/tmp/vosk_tmp.vsk";
+                                        fs::write(tmp, contents).unwrap();
+            
+                                        let output = Command::new("vosk")
+                                            .arg("run")
+                                            .arg(tmp)
+                                            .output();
+            
+                                        match output {
+                                            Ok(out) => {
+                                                println!();
+                                                print!("{}", String::from_utf8_lossy(&out.stdout));
+                                                println!();
+                                            }
+                                            Err(_) => {
+                                                println!("error: vosk binary not found");
+                                            }
+                                        }
+                                    }
+                                    None => println!("error: '{}' not found", arg),
+                                }
+                            }
+                        }
+            
             "exit" => {
                 println!("session closed.");
                 break;
